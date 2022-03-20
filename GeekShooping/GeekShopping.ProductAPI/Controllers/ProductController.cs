@@ -30,13 +30,13 @@ namespace GeekShopping.ProductAPI.Controllers
             return Ok(product);
         }
         [HttpPost]
-        public async Task<ActionResult<ProductVO>> Create(ProductVO product)
+        public async Task<ActionResult<ProductVO>> Create([FromBody] ProductVO product)
         {
             if (product == null) return BadRequest();
             return Ok(await _repository.Create(product));
         }
         [HttpPut]
-        public async Task<ActionResult<ProductVO>> Update(ProductVO product)
+        public async Task<ActionResult<ProductVO>> Update([FromBody] ProductVO product)
         {
             if (product == null) return BadRequest();
             return Ok(await _repository.Update(product));
