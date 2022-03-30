@@ -47,6 +47,8 @@ namespace GeekShopping.CartAPI.Repository
                 .Where(c => c.CartHeaderId == cart.CartHeader.Id)
                 .Include(c => c.Product);
 
+            cart.CartDetails = cartDetails;
+
             return _mapper.Map<CartVO>(cart);
         }
 
@@ -105,11 +107,11 @@ namespace GeekShopping.CartAPI.Repository
             else
             {
                 var cartDetail = await _context.CartDetails.AsNoTracking().FirstOrDefaultAsync(
-                    c => c.ProductId == vo.CartDetails.FirstOrDefault().ProductId &&
-                    c.CartHeaderId == vo.CartHeader.Id);
+                    c => c.ProductId == cart.CartDetails.FirstOrDefault().ProductId &&
+                    c.CartHeaderId == cartHeader.Id);
                 if(cartDetail == null)
                 {
-                    cart.CartDetails.FirstOrDefault().CartHeaderId = cart.CartHeader.Id;
+                    cart.CartDetails.FirstOrDefault().CartHeaderId = cartHeader.Id;
                     cart.CartDetails.FirstOrDefault().Product = null;
                     _context.CartDetails.Add(cart.CartDetails.FirstOrDefault());
                     await _context.SaveChangesAsync();
